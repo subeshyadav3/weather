@@ -104,7 +104,7 @@ export function Api() {
               <p>Min Temperature: {(data.main.temp_min - 273.15).toFixed(2)} °C</p>
               <p>Max Temperature: {(data.main.temp_max - 273.15).toFixed(2)} °C</p>
               <p>Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</p>
-              <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
+              <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()-12}</p>
               <p>Weather: {data.weather[0].description}</p>
               <p>Humidity: {data.main.humidity}%</p>
               <p>Wind Speed: {data.wind.speed} m/s</p>
