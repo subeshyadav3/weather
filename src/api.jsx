@@ -99,16 +99,31 @@ export function Api() {
         >
           {data && (
             <>
-              <p className="text-xl font-semibold">Location: {data.name}, {data.sys.country}</p>
-              <p>Temperature: {((data.main.temp) - 273.15).toFixed(2)} °C</p>
-              <p>Min Temperature: {(data.main.temp_min - 273.15).toFixed(2)} °C</p>
-              <p>Max Temperature: {(data.main.temp_max - 273.15).toFixed(2)} °C</p>
-              <p>Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</p>
-              <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
-              <p>Weather: {data.weather[0].description}</p>
-              <p>Humidity: {data.main.humidity}%</p>
-              <p>Wind Speed: {data.wind.speed} m/s</p>
-            </>
+            <p className="text-xl font-semibold">Location: {data.name}, {data.sys.country}</p>
+            <p>Temperature: {((data.main.temp) - 273.15).toFixed(2)} °C</p>
+            <p>Min Temperature: {(data.main.temp_min - 273.15).toFixed(2)} °C</p>
+            <p>Max Temperature: {(data.main.temp_max - 273.15).toFixed(2)} °C</p>
+            <p>
+              Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString('en-us', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true, // formating for mobile
+              })}
+            </p>
+            <p>
+              Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString('en-us', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true, // formating for mobile
+              })}
+            </p>
+            <p>Weather: {data.weather[0].description}</p>
+            <p>Humidity: {data.main.humidity}%</p>
+            <p>Wind Speed: {data.wind.speed} m/s</p>
+          </>
+          
           )}
         </div>
         <div className="w-full md:w-1/2 bg-white shadow-md rounded-lg p-5">
