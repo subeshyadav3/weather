@@ -3,11 +3,11 @@ import preact from '@preact/preset-vite';
 
 export default defineConfig({
   plugins: [preact()],
-  base: '/weather-app/',  // Corrected this line
+  base: '/weather-app/',  // Ensures correct path handling for GitHub Pages
   css: {
-    postcss: './postcss.config.js',
+    postcss: './postcss.config.js',  // Uses your custom PostCSS configuration
   },
   build: {
-    outDir: 'build',  // This specifies the output directory as 'build'
+    outDir: 'build',  // Specifies the output directory as 'build'
   },
 });
