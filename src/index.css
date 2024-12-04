@@ -15,3 +15,6 @@ body{
   justify-content: center;
   align-items: center
 }
+.home-page{
+  background: linear-gradient(315deg, #ea0f6f 0%, #d6c0c1 100%)
+}

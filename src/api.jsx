@@ -2,117 +2,119 @@ import { useEffect } from 'preact/hooks';
 import { useState } from 'react';
 
 export function Api() {
-    const [city, setCity] = useState("Kathmandu");
-    const [data, setData] = useState(null);  
-    const [show,setShow]=useState(null);
-    
-    const [cities,setCities]=useState([]);
+  const [city, setCity] = useState("Kathmandu");
+  const [data, setData] = useState(null);
+  const [show, setShow] = useState(null);
+  const [cities, setCities] = useState([]);
 
-    useEffect(() => {
-        getWeather(); //for default 
-        const getRecord = JSON.parse(localStorage.getItem("cities"));
-        
-        Object.values(getRecord).forEach(value => {
-            cities.push(value);
-            
-             
-        });
-        
-        
-    }, []);
-    async function getWeather() {
-        setShow(city)
-        try {
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc724fc1382669595cfbe6798cca3cb6`);
-            const result = await response.json();
-            
-            if(result.cod=="404"){
-                setData(null)
-            }
-            else{
-                setData(result)
-                    if(!(cities[0]==city)){
-                                // records of searched city
-                        const updatedCities=[city,...cities];
-                        setCities(updatedCities);
-                        localStorage.setItem("cities",JSON.stringify(updatedCities));
-                    }
-                    
-            }
+  useEffect(() => {
+    getWeather(); // for default
+    const getRecord = JSON.parse(localStorage.getItem("cities"));
+    if (getRecord) {
+      Object.values(getRecord).forEach((value) => {
+        cities.push(value);
+      });
+    }
+  }, []);
 
-            
-        } catch (error) {
-            console.error("Error fetching weather data: ", error);
+  async function getWeather() {
+    setShow(city);
+    try {
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=fc724fc1382669595cfbe6798cca3cb6`
+      );
+      const result = await response.json();
+
+      if (result.cod === "404") {
+        setData(null);
+      } else {
+        setData(result);
+        if (!(cities[0] === city)) {
+          // records of searched city
+          const updatedCities = [city, ...cities];
+          setCities(updatedCities);
+          localStorage.setItem("cities", JSON.stringify(updatedCities));
         }
-
-        setTimeout(() => {
-            loadCities(); // Call after 1 second
-        }, 1000);
-     
-
-    
-    
+      }
+    } catch (error) {
+      console.error("Error fetching weather data: ", error);
     }
 
-    function loadCities() {
-        return (
-            <>  
-            <p className='text-blue-400 text-2xl'>Previous Searches</p>
-                {cities.map((e, index) => (
-                    index>8?"":<p key={index}>{e}</p>
-                ))}
-            </>
-        );
-    }
+    setTimeout(() => {
+      loadCities(); // Call after 1 second
+    }, 1000);
+  }
+
+  function loadCities() {
     return (
-        <div className='flex flex-col justify-center items-center '>
-            <div className=' p-5 flex flex-row justify-center items-center gap-1 mt-5'>
-                <input
-                    type="text"
-                    className=' rounded-xl h-10 text-black p-2 sm:w-[400px]'
-                    onChange={(e) => {
-                        setCity(e.target.value)
-                        
-                    }}
-                    // value={city}
-                    placeholder='Search More City: Pokhara,London...'
-                />
-                <button
-                    className='rounded-xl bg-orange-500 m-5 w-20 h-10 text-xl'
-                    onClick={getWeather}
-                >
-                    Search
-                </button>
-            </div>
-            <div className='m-2 pl-10 h-10 text-2xl w-full flex flex-row'>
-                <p>{data?"Showing Result For ":"No Data Available, Type Valid City and Search "}</p>
-                <p className='ml-2 text-green-700'>{show}</p>
-            </div>
-            <div className='p-5 w-full flex flex-row'>
-                <div className='w-1/2 mr-5'>
-                    
-                    {data ? (
-                        <div>
-                            <p>Location: {data.name}, {data.sys.country}</p>
-                            <p>Temperature: {((data.main.temp)-273.15).toFixed(2)} °C</p> 
-                            <p>Min Temperature: {(data.main.temp_min-273.15).toFixed(2)} °C</p> 
-                            <p>Max Temperature: {(data.main.temp_max-273.15).toFixed(2)} °C</p> 
-                            <p>Sunrise At {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</p>
-                            <p>Sunset At {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
-
-
-                            <p>Weather: {data.weather[0].description}</p>
-                            <p>Humidity: {data.main.humidity}</p>
-                            <p>Speed: {data.wind.speed} </p>
-                        
-                        </div>
-                    ) : <div></div>}
-                    </div>
-                       
-                    <div>
-                    {loadCities()}
-                    </div>
-            </div>
-        </div>
+      <>
+        <p className="text-blue-500 text-2xl font-semibold mb-4">Previous Searches</p>
+        <ul className="space-y-2">
+          {cities.map((e, index) =>
+            index > 5 ? null : (
+              <li
+                key={index}
+                className="text-gray-700 bg-gray-100 p-2 rounded-lg shadow-sm hover:bg-gray-200 "
+              >
+                {e}
+              </li>
+            )
+          )}
+        </ul>
+      </>
     );
+  }
+
+  return (
+    <div className="home-page flex flex-col justify-center items-center py-10 px-5 bg-gradient-to-r from-blue-50 via-white to-blue-50 mt-5">
+      <div className="p-5 flex flex-row justify-center items-center gap-3 mt-5">
+        <input
+          type="text"
+          className="rounded-xl h-12 text-black px-4 sm:w-[400px] shadow-md transition-all duration-300 focus:ring focus:ring-orange-400 focus:scale-105"
+          onChange={(e) => {
+            setCity(e.target.value);
+          }}
+          placeholder="Search for a city, e.g., Pokhara, London..."
+        />
+        <button
+          className="rounded-xl bg-orange-500 w-24 h-12 text-black font-semibold hover:bg-orange-600 active:scale-95 transition-all"
+          onClick={getWeather}
+        >
+          Search
+        </button>
+      </div>
+      <div className="m-2 text-center text-2xl font-semibold text-black">
+        <p>
+          {data
+            ? "Showing Result For:"
+            : "No Data Available. Type a valid city and search."}{" "}
+          <span className="text-green-700">{show}</span>
+        </p>
+      </div>
+      <div className="p-5 w-full flex flex-col md:flex-row gap-5">
+        <div
+          className={`w-full md:w-1/2 bg-white text-black shadow-md rounded-lg p-5 transition-opacity duration-500 ${
+            data ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {data && (
+            <>
+              <p className="text-xl font-semibold">Location: {data.name}, {data.sys.country}</p>
+              <p>Temperature: {((data.main.temp) - 273.15).toFixed(2)} °C</p>
+              <p>Min Temperature: {(data.main.temp_min - 273.15).toFixed(2)} °C</p>
+              <p>Max Temperature: {(data.main.temp_max - 273.15).toFixed(2)} °C</p>
+              <p>Sunrise: {new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</p>
+              <p>Sunset: {new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
+              <p>Weather: {data.weather[0].description}</p>
+              <p>Humidity: {data.main.humidity}%</p>
+              <p>Wind Speed: {data.wind.speed} m/s</p>
+            </>
+          )}
+        </div>
+        <div className="w-full md:w-1/2 bg-white shadow-md rounded-lg p-5">
+          {loadCities()}
+        </div>
+      </div>
+    </div>
+  );
 }
