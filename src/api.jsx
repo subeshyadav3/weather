@@ -66,7 +66,7 @@ export function Api() {
   }
 
   return (
-    <div className="w-full sm:w-auto home-page flex flex-col justify-center items-center py-10 px-5 bg-gradient-to-r from-blue-600 via-blue-200 to-blue-600 mt-5">
+    <div className="w-full mt-0 sm:w-auto home-page flex flex-col justify-center items-center py-10 px-5 bg-gradient-to-r from-blue-600 via-blue-200 to-blue-600 sm:mt-5">
       <div className="p-5 flex flex-row justify-center items-center gap-3 mt-5">
         <input
           type="text"
